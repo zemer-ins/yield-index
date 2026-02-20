@@ -3,105 +3,77 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>מדד התשואות | אור זמר</title>
+  <title>מדד התשואות | מערכת השוואת תשואות בלתי תלויה</title>
 
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
 
-  <!-- Tailwind CDN -->
-  <script src="https://cdn.tailwindcss.com"></script>
-
-  <!-- Chart.js CDN -->
+  <!-- Chart.js -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
-  <script>
-    tailwind.config = {
-      corePlugins: { preflight: false },   /* keep our own reset */
-      theme: {
-        extend: {
-          colors: {
-            gold:    { DEFAULT: '#D4AF37', light: '#F0D060', dark: '#8B7320' },
-            surface: { DEFAULT: '#111111', 2: '#161616' },
-          }
-        }
-      }
-    };
-  </script>
 
-  <!-- Custom Theme -->
+  <!-- Portal Styles -->
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
 
 <!-- ════════════════════════════════════════════
-     MOBILE OVERLAY
+     PORTAL HEADER
      ════════════════════════════════════════════ -->
-<div id="overlay" class="hidden"></div>
+<header class="portal-header">
+  <div class="header-inner">
+    <div class="header-brand">
+      <div class="brand-mark">מד</div>
+      <div>
+        <div class="brand-name gold-text">מדד התשואות</div>
+        <div class="brand-authority">מערכת השוואת תשואות בלתי תלויה | בפיקוח מקצועי: אור זמר</div>
+      </div>
+    </div>
+    <div class="header-badge">
+      <span class="badge-dot"></span>
+      <span>עודכן פברואר 2026</span>
+    </div>
+  </div>
+</header>
 
 <!-- ════════════════════════════════════════════
-     APP SHELL
+     HERO — Tiles landing grid
      ════════════════════════════════════════════ -->
-<div class="app-shell">
+<section class="hero-section">
+  <div class="container">
 
-  <!-- ── SIDEBAR ── -->
-  <aside id="sidebar" class="sidebar">
-
-    <!-- Brand -->
-    <div class="sidebar-brand">
-      <div class="brand-title gold-text">מדד התשואות</div>
-      <div class="brand-sub">השוואת מכשירי חיסכון והשקעה</div>
+    <div class="hero-text">
+      <div class="hero-tag">נתוני גמל נט · פברואר 2026</div>
+      <h1 class="hero-title gold-text">השוואת מכשירי חיסכון והשקעה</h1>
+      <p class="hero-sub">בחר קטגוריה לצפייה בנתונים המלאים, ניתוח וחישוב פוטנציאל החיסכון</p>
     </div>
 
-    <!-- Nav (injected by app.js) -->
-    <ul id="nav-list"></ul>
+    <!-- Tiles injected by Portal.init() -->
+    <div class="tiles-grid" id="tiles-grid"></div>
 
-    <!-- Sidebar Footer -->
-    <div style="padding:16px 20px; border-top:1px solid rgba(212,175,55,0.12);">
-      <div style="font-size:0.7rem; color:var(--c-text3); line-height:1.5;">
-        נתוני גמל נט<br/>
-        <span style="color:var(--c-gold-dark);">פברואר 2025</span> · לצורך המחשה
-      </div>
-    </div>
+  </div>
+</section>
 
-  </aside>
+<!-- ════════════════════════════════════════════
+     CONTENT SECTION (hidden until tile click)
+     ════════════════════════════════════════════ -->
+<section class="content-section" id="content-section">
+  <div class="container">
+    <!-- Populated by Portal.openCategory(key) -->
+  </div>
+</section>
 
-  <!-- ── MAIN AREA ── -->
-  <div class="main-area">
-
-    <!-- HEADER -->
-    <header class="app-header">
-      <div>
-        <div class="header-title">
-          <span>מדד התשואות</span>
-          <span style="color:var(--c-text3); font-weight:400;">| אור זמר</span>
-        </div>
-        <div id="header-subtitle">טוען...</div>
-      </div>
-
-      <!-- Mobile hamburger -->
-      <button id="menu-toggle" class="menu-toggle-btn" aria-label="תפריט">☰</button>
-    </header>
-
-    <!-- MAIN CONTENT (DataController renders here) -->
-    <main id="main-content" style="opacity:0;"></main>
-
-    <!-- FOOTER SIGNATURE -->
-    <footer class="app-footer">
-      <div class="footer-sig">
-        המערכת פותחה על ידי <strong>אור זמר</strong> — מתכנן פיננסי
-      </div>
-      <div class="footer-badge">
-        <span class="footer-dot"></span>
-        <span>רישיון</span>
-        <span dir="ltr" style="display:inline-block; color:var(--c-gold-dark);">L-00137567</span>
-        <span class="footer-dot"></span>
-        <span>כל הנתונים לצורך המחשה בלבד</span>
-      </div>
-    </footer>
-
-  </div><!-- /main-area -->
-</div><!-- /app-shell -->
+<!-- ════════════════════════════════════════════
+     PORTAL FOOTER
+     ════════════════════════════════════════════ -->
+<footer class="portal-footer">
+  <div class="footer-inner">
+    <span class="footer-brand">אור זמר — מתכנן פיננסי</span>
+    <span>מערכת השוואת תשואות בלתי תלויה | נתוני גמל נט לצורך המחשה בלבד</span>
+    <span class="footer-lic">L-00137567</span>
+  </div>
+</footer>
 
 <!-- ════════════════════════════════════════════
      SCRIPTS (order matters)

@@ -1,32 +1,53 @@
 /**
  * data.js — Yield Data Store
- * מדד התשואות | אור זמר — מתכנן פיננסי
- * Source: GemelNet approximations (illustrative, Feb 2025)
+ * מדד התשואות | בפיקוח מקצועי: אור זמר
+ * Source: GemelNet (illustrative) · February 2026
  */
 
 window.YIELD_DATA = {
 
-  /* ── NAV CATEGORIES ─────────────────────────────── */
+  meta: {
+    updated:  'פברואר 2026',
+    source:   'גמל נט',
+    disclaimer: 'הנתונים המוצגים הם לצורך המחשה בלבד על בסיס נתוני גמל נט. אינם מהווים ייעוץ השקעות. ביצועי עבר אינם מבטיחים תשואות עתידיות.',
+  },
+
   categories: [
-    { key: 'dashboard',  label: 'דשבורד',              icon: '▦',  subtitle: 'סקירה כללית' },
-    { key: 'hashtalut',  label: 'קרנות השתלמות',       icon: '🎓', subtitle: 'מסלול מניות' },
-    { key: 'gemel',      label: 'גמל להשקעה',           icon: '📊', subtitle: 'מסלול מניות' },
-    { key: 'polisa',     label: 'פוליסות חיסכון',       icon: '📋', subtitle: 'מסלול מניות' },
-    { key: 'pension',    label: 'קרנות פנסיה',          icon: '🌅', subtitle: 'מסלול מניות' },
-    { key: 'yeladim',    label: 'חיסכון לכל ילד',       icon: '🧒', subtitle: 'מסלול מניות' },
+    { key: 'pension',   label: 'קרנות פנסיה',       icon: '🌅', subtitle: 'מסלול מניות' },
+    { key: 'hashtalut', label: 'קרנות השתלמות',      icon: '🎓', subtitle: 'מסלול מניות' },
+    { key: 'gemel',     label: 'גמל להשקעה',          icon: '📊', subtitle: 'מסלול מניות' },
+    { key: 'polisa',    label: 'פוליסות חיסכון',      icon: '📋', subtitle: 'מסלול מניות' },
+    { key: 'yeladim',   label: 'חיסכון לכל ילד',      icon: '🧒', subtitle: 'מסלול מניות' },
   ],
 
-  /* ── TABLE SCHEMAS & ROWS ───────────────────────── */
   tables: {
+
+    pension: {
+      topKey: 'y1',
+      columns: [
+        { key: 'name',       label: 'קרן',                  type: 'text',    align: 'right'  },
+        { key: 'y1',         label: 'תשואה 12 חודשים',      type: 'percent', align: 'center' },
+        { key: 'y3',         label: 'תשואה 3 שנים',         type: 'percent', align: 'center' },
+        { key: 'feeDeposit', label: 'דמי ניהול מהפקדה',    type: 'percent', align: 'center' },
+        { key: 'feeAcc',     label: 'דמי ניהול מצבירה',    type: 'percent', align: 'center' },
+      ],
+      rows: [
+        { name: 'מור פנסיה',          y1: 20.1, y3: 46.2, feeDeposit: 1.49, feeAcc: 0.10 },
+        { name: 'אלטשולר שחם פנסיה', y1: 18.9, y3: 43.5, feeDeposit: 1.49, feeAcc: 0.10 },
+        { name: 'מיטב פנסיה',         y1: 17.8, y3: 39.9, feeDeposit: 1.49, feeAcc: 0.10 },
+        { name: 'הראל פנסיה',         y1: 16.7, y3: 37.1, feeDeposit: 1.49, feeAcc: 0.15 },
+        { name: 'פניקס פנסיה',        y1: 16.2, y3: 36.0, feeDeposit: 1.49, feeAcc: 0.20 },
+      ],
+    },
 
     hashtalut: {
       topKey: 'y1',
       columns: [
-        { key: 'name',   label: 'חברה',                 type: 'text',    align: 'right'  },
-        { key: 'y1',     label: 'תשואה 12 חודשים',      type: 'percent', align: 'center' },
-        { key: 'y3',     label: 'תשואה 3 שנים',         type: 'percent', align: 'center' },
-        { key: 'fee',    label: 'דמי ניהול',            type: 'percent', align: 'center' },
-        { key: 'equity', label: 'חשיפה למניות',         type: 'percent', align: 'center' },
+        { key: 'name',   label: 'חברה',               type: 'text',    align: 'right'  },
+        { key: 'y1',     label: 'תשואה 12 חודשים',    type: 'percent', align: 'center' },
+        { key: 'y3',     label: 'תשואה 3 שנים',       type: 'percent', align: 'center' },
+        { key: 'fee',    label: 'דמי ניהול',          type: 'percent', align: 'center' },
+        { key: 'equity', label: 'חשיפה למניות',       type: 'percent', align: 'center' },
       ],
       rows: [
         { name: 'מור',           y1: 19.7, y3: 45.3, fee: 0.40, equity: 96 },
@@ -40,11 +61,11 @@ window.YIELD_DATA = {
     gemel: {
       topKey: 'y1',
       columns: [
-        { key: 'name', label: 'חברה',                   type: 'text',    align: 'right'  },
-        { key: 'y1',   label: 'תשואה 12 חודשים',        type: 'percent', align: 'center' },
-        { key: 'y3',   label: 'תשואה 3 שנים',           type: 'percent', align: 'center' },
-        { key: 'fee',  label: 'דמי ניהול',              type: 'percent', align: 'center' },
-        { key: 'aum',  label: 'נכסים מנוהלים (מיל׳)',   type: 'number',  align: 'center' },
+        { key: 'name', label: 'חברה',                 type: 'text',    align: 'right'  },
+        { key: 'y1',   label: 'תשואה 12 חודשים',      type: 'percent', align: 'center' },
+        { key: 'y3',   label: 'תשואה 3 שנים',         type: 'percent', align: 'center' },
+        { key: 'fee',  label: 'דמי ניהול',            type: 'percent', align: 'center' },
+        { key: 'aum',  label: "נכסים מנוהלים (מיל')", type: 'number',  align: 'center' },
       ],
       rows: [
         { name: 'מור',           y1: 19.3, y3: 44.1, fee: 0.50, aum: 2800  },
@@ -58,11 +79,11 @@ window.YIELD_DATA = {
     polisa: {
       topKey: 'y1',
       columns: [
-        { key: 'name',      label: 'חברת ביטוח',        type: 'text',    align: 'right'  },
-        { key: 'y1',        label: 'תשואה 12 חודשים',   type: 'percent', align: 'center' },
-        { key: 'y3',        label: 'תשואה 3 שנים',      type: 'percent', align: 'center' },
-        { key: 'fee',       label: 'דמי ניהול מנכסים', type: 'percent', align: 'center' },
-        { key: 'liquidity', label: 'נזילות',             type: 'text',    align: 'center' },
+        { key: 'name',      label: 'חברת ביטוח',      type: 'text',    align: 'right'  },
+        { key: 'y1',        label: 'תשואה 12 חודשים', type: 'percent', align: 'center' },
+        { key: 'y3',        label: 'תשואה 3 שנים',    type: 'percent', align: 'center' },
+        { key: 'fee',       label: 'דמי ניהול מנכסים',type: 'percent', align: 'center' },
+        { key: 'liquidity', label: 'נזילות',           type: 'text',    align: 'center' },
       ],
       rows: [
         { name: 'מנורה מבטחים', y1: 18.8, y3: 43.2, fee: 0.80, liquidity: 'מלאה' },
@@ -73,32 +94,14 @@ window.YIELD_DATA = {
       ],
     },
 
-    pension: {
-      topKey: 'y1',
-      columns: [
-        { key: 'name',       label: 'קרן',                    type: 'text',    align: 'right'  },
-        { key: 'y1',         label: 'תשואה 12 חודשים',        type: 'percent', align: 'center' },
-        { key: 'y3',         label: 'תשואה 3 שנים',           type: 'percent', align: 'center' },
-        { key: 'feeDeposit', label: 'דמי ניהול מהפקדה',      type: 'percent', align: 'center' },
-        { key: 'feeAcc',     label: 'דמי ניהול מצבירה',      type: 'percent', align: 'center' },
-      ],
-      rows: [
-        { name: 'מור פנסיה',          y1: 20.1, y3: 46.2, feeDeposit: 1.49, feeAcc: 0.10 },
-        { name: 'אלטשולר שחם פנסיה', y1: 18.9, y3: 43.5, feeDeposit: 1.49, feeAcc: 0.10 },
-        { name: 'מיטב פנסיה',         y1: 17.8, y3: 39.9, feeDeposit: 1.49, feeAcc: 0.10 },
-        { name: 'הראל פנסיה',         y1: 16.7, y3: 37.1, feeDeposit: 1.49, feeAcc: 0.15 },
-        { name: 'פניקס פנסיה',        y1: 16.2, y3: 36.0, feeDeposit: 1.49, feeAcc: 0.20 },
-      ],
-    },
-
     yeladim: {
       topKey: 'y1',
       columns: [
-        { key: 'name',  label: 'גוף מנהל',             type: 'text',    align: 'right'  },
-        { key: 'y1',    label: 'תשואה 12 חודשים',       type: 'percent', align: 'center' },
-        { key: 'y3',    label: 'תשואה 3 שנים',          type: 'percent', align: 'center' },
-        { key: 'fee',   label: 'דמי ניהול',             type: 'percent', align: 'center' },
-        { key: 'track', label: 'מסלול',                 type: 'text',    align: 'center' },
+        { key: 'name',  label: 'גוף מנהל',            type: 'text',    align: 'right'  },
+        { key: 'y1',    label: 'תשואה 12 חודשים',      type: 'percent', align: 'center' },
+        { key: 'y3',    label: 'תשואה 3 שנים',         type: 'percent', align: 'center' },
+        { key: 'fee',   label: 'דמי ניהול',            type: 'percent', align: 'center' },
+        { key: 'track', label: 'מסלול',                type: 'text',    align: 'center' },
       ],
       rows: [
         { name: 'מור',          y1: 19.5, y3: 44.8, fee: 0.40, track: 'מניות' },
@@ -109,16 +112,15 @@ window.YIELD_DATA = {
       ],
     },
 
-  }, // end tables
-
-  /* ── WHATSAPP MESSAGES per category ─────────────── */
-  waMessages: {
-    dashboard:  'שלום, הגעתי דרך מדד התשואות ואשמח לייעוץ פיננסי אישי',
-    hashtalut:  'שלום, אשמח לייעוץ על קרן השתלמות',
-    gemel:      'שלום, אשמח לייעוץ על גמל להשקעה',
-    polisa:     'שלום, אשמח לייעוץ על פוליסת חיסכון',
-    pension:    'שלום, אשמח לייעוץ על קרן פנסיה',
-    yeladim:    'שלום, אשמח לייעוץ על חיסכון לכל ילד',
   },
 
-}; // end YIELD_DATA
+  waMessages: {
+    pension:    'שלום, הגעתי דרך מדד התשואות ואשמח לייעוץ על קרן פנסיה',
+    hashtalut:  'שלום, הגעתי דרך מדד התשואות ואשמח לייעוץ על קרן השתלמות',
+    gemel:      'שלום, הגעתי דרך מדד התשואות ואשמח לייעוץ על גמל להשקעה',
+    polisa:     'שלום, הגעתי דרך מדד התשואות ואשמח לייעוץ על פוליסת חיסכון',
+    yeladim:    'שלום, הגעתי דרך מדד התשואות ואשמח לייעוץ על חיסכון לכל ילד',
+    cta:        'שלום, הגעתי דרך מדד התשואות ואשמח לייעוץ פיננסי אישי מותאם לתיק שלי',
+  },
+
+};
