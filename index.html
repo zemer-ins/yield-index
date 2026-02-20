@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>מדד התשואות | אור זמר</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    /* Layout helpers */
+    .container { max-width: 900px; margin: 0 auto; padding: 0 20px; }
+    .grid-3x2  { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+    @media (max-width: 640px) { .grid-3x2 { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 400px) { .grid-3x2 { grid-template-columns: 1fr; } }
+    .tile-inner { padding: 24px 20px; }
+    .tile-title { font-size: 1rem; font-weight: 700; color: #F5F5F5; margin-bottom: 6px; line-height: 1.3; }
+    .tile-sub   { font-size: 0.75rem; color: #6B7280; line-height: 1.4; }
+    .stat-pill  { display: inline-block; font-size: 0.7rem; font-weight: 600;
+                  padding: 2px 8px; border-radius: 999px; margin-top: 10px;
+                  background: rgba(212,175,55,0.1); color: #D4AF37;
+                  border: 1px solid rgba(212,175,55,0.2); }
+    .detail-header { display: flex; align-items: center; gap: 12px; margin-bottom: 24px; flex-wrap: wrap; }
+    .detail-title  { font-size: 1.4rem; font-weight: 800; }
+    .detail-sub    { font-size: 0.8rem; color: #6B7280; margin-top: 2px; }
+    .text-right { text-align: right; }
+    .text-center { text-align: center; }
+    .tabular { font-variant-numeric: tabular-nums; }
+    .col-green { color: #22C55E; font-weight: 700; }
+    .col-gold  { color: #D4AF37; font-weight: 600; }
+    .col-red   { color: #EF4444; }
+    .mt-4 { margin-top: 16px; }
+    .mt-6 { margin-top: 24px; }
+    .mb-4 { margin-bottom: 16px; }
+    .mb-6 { margin-bottom: 24px; }
+    .flex { display: flex; }
+    .items-center { align-items: center; }
+    .gap-3 { gap: 12px; }
+    .justify-between { justify-content: space-between; }
+    .flex-wrap { flex-wrap: wrap; }
+  </style>
+</head>
+<body>
+
+  <!-- ═══════════════════════════════════
+       HEADER
+       ═══════════════════════════════════ -->
+  <header style="padding: 28px 20px 0;">
+    <div class="container">
+      <div class="flex items-center justify-between flex-wrap gap-3 mb-2">
+        <div>
+          <h1 class="gold-text" style="font-size:1.8rem; font-weight:800; letter-spacing:-0.5px;">
+            מדד התשואות
+          </h1>
+          <p style="color:#6B7280; font-size:0.8rem; margin-top:4px;">
+            השוואת מכשירי חיסכון והשקעה · נתוני גמל נט
+          </p>
+        </div>
+        <div id="backBtn" style="display:none;">
+          <button class="btn-ghost" onclick="showLanding()">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+                 stroke="currentColor" stroke-width="2">
+              <polyline points="9 18 15 12 9 6"/>
+            </svg>
+            חזרה לתפריט
+          </button>
+        </div>
+      </div>
+      <div class="gold-divider" style="margin-top:16px;"></div>
+    </div>
+  </header>
+
+  <!-- ═══════════════════════════════════
+       MAIN
+       ═══════════════════════════════════ -->
+  <main style="padding: 32px 20px; min-height: calc(100vh - 160px);">
+    <div class="container">
+
+      <!-- ─── LANDING VIEW ─── -->
+      <div id="viewLanding" class="view active">
+        <p class="anim-fade-up" style="color:#6B7280; font-size:0.85rem; margin-bottom:24px; text-align:center;">
+          בחר מכשיר פיננסי לצפייה בנתוני תשואות עדכניים
+        </p>
+
+        <div class="grid-3x2">
+
+          <!-- 1. קרנות השתלמות -->
+          <div class="tile anim-fade-up" onclick="showView('hashtalut')">
+            <div class="tile-inner">
+              <div class="tile-icon">🎓</div>
+              <div class="tile-title">קרנות השתלמות</div>
+              <div class="tile-sub">מסלולי מניות, כללי ואג"ח</div>
+              <span class="stat-pill">5 קרנות</span>
+            </div>
+          </div>
+
+          <!-- 2. קופות גמל להשקעה -->
+          <div class="tile anim-fade-up-1" onclick="showView('gemel')">
+            <div class="tile-inner">
+              <div class="tile-icon">📊</div>
+              <div class="tile-title">קופות גמל להשקעה</div>
+              <div class="tile-sub">גמישות נזילות מלאה</div>
+              <span class="stat-pill">5 קופות</span>
+            </div>
+          </div>
+
+          <!-- 3. פוליסות חיסכון -->
+          <div class="tile anim-fade-up-2" onclick="showView('polisa')">
+            <div class="tile-inner">
+              <div class="tile-icon">📋</div>
+              <div class="tile-title">פוליסות חיסכון</div>
+              <div class="tile-sub">ניהול אקטיבי ממוקד</div>
+              <span class="stat-pill">5 פוליסות</span>
+            </div>
+          </div>
+
+          <!-- 4. קרנות פנסיה -->
+          <div class="tile anim-fade-up-1" onclick="showView('pension')">
+            <div class="tile-inner">
+              <div class="tile-icon">🌅</div>
+              <div class="tile-title">קרנות פנסיה</div>
+              <div class="tile-sub">מסלולי מניות ומסלול ברירת מחדל</div>
+              <span class="stat-pill">5 קרנות</span>
+            </div>
+          </div>
+
+          <!-- 5. חיסכון לכל ילד -->
+          <div class="tile anim-fade-up-2" onclick="showView('yeladim')">
+            <div class="tile-inner">
+              <div class="tile-icon">🧒</div>
+              <div class="tile-title">חיסכון לכל ילד</div>
+              <div class="tile-sub">תשואות לפי גוף מנהל</div>
+              <span class="stat-pill">5 גופים</span>
+            </div>
+          </div>
+
+          <!-- 6. בדיקת תיק אישית (CTA) -->
+          <div class="tile tile-cta anim-fade-up-3"
+               onclick="window.open('https://wa.me/972502278922?text=%D7%A9%D7%9C%D7%95%D7%9D%2C%20%D7%90%D7%A9%D7%9E%D7%97%20%D7%9C%D7%A7%D7%91%D7%9C%20%D7%91%D7%93%D7%99%D7%A7%D7%AA%20%D7%AA%D7%99%D7%A7%20%D7%90%D7%99%D7%A9%D7%99%D7%AA','_blank')">
+            <div class="tile-inner">
+              <div class="tile-icon" style="background:rgba(212,175,55,0.12);border-color:rgba(212,175,55,0.4);">✨</div>
+              <div class="tile-title gold-text" style="font-size:1rem;">בדיקת תיק אישית</div>
+              <div class="tile-sub">קבל ניתוח מותאם ישירות בוואטסאפ</div>
+              <span class="stat-pill" style="background:rgba(212,175,55,0.15);border-color:rgba(212,175,55,0.4);">ייעוץ חינם</span>
+            </div>
+          </div>
+
+        </div><!-- /grid -->
+      </div><!-- /landing -->
+
+
+      <!-- ─── DETAIL VIEWS ─── -->
+
+      <!-- קרנות השתלמות -->
+      <div id="viewHashtalut" class="view">
+        <div class="detail-header anim-fade-up">
+          <div class="tile-icon" style="margin:0; font-size:1.3rem;">🎓</div>
+          <div>
+            <div class="detail-title gold-text">קרנות השתלמות — מסלול מניות</div>
+            <div class="detail-sub">נתוני גמל נט · פברואר 2025 · לצורך המחשה בלבד</div>
+          </div>
+        </div>
+        <div class="table-scroll anim-fade-up-1">
+          <table class="data-table" id="tHashtalut">
+            <thead><tr>
+              <th class="text-right" data-col="0" data-type="text">חברה <span class="sort-icon">↓</span></th>
+              <th class="text-center" data-col="1" data-type="num">תשואה 12 חודשים <span class="sort-icon">↓</span></th>
+              <th class="text-center" data-col="2" data-type="num">תשואה 3 שנים <span class="sort-icon">↓</span></th>
+              <th class="text-center" data-col="3" data-type="num">דמי ניהול <span class="sort-icon">↓</span></th>
+              <th class="text-center" data-col="4" data-type="num">חשיפה למניות <span class="sort-icon">↓</span></th>
+            </tr></thead>
+            <tbody></tbody>
+          </table>
+        </div>
+        <div class="disclaimer mt-4 anim-fade-up-2">
+          ⚠️ הנתונים המוצגים הם לצורך המחשה בלבד על בסיס נתוני גמל נט. אינם מהווים ייעוץ השקעות. ביצועי עבר אינם מבטיחים תשואות עתידיות.
+        </div>
+        <div class="mt-6 text-center anim-fade-up-3">
+          <a href="https://wa.me/972502278922?text=%D7%90%D7%A9%D7%9E%D7%97%20%D7%99%D7%99%D7%A2%D7%95%D7%A5%20%D7%A2%D7%9C%20%D7%A7%D7%A8%D7%A0%D7%95%D7%AA%20%D7%94%D7%A9%D7%AA%D7%9C%D7%9E%D7%95%D7%AA"
+             target="_blank" class="btn-gold">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="#0A0A0A"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+            ייעוץ קרן השתלמות
+          </a>
+        </div>
+      </div>
+
+      <!-- קופות גמל -->
+      <div id="viewGemel" class="view">
+        <div class="detail-header anim-fade-up">
+          <div class="tile-icon" style="margin:0; font-size:1.3rem;">📊</div>
+          <div>
+            <div class="detail-title gold-text">קופות גמל להשקעה — מסלול מניות</div>
+            <div class="detail-sub">נתוני גמל נט · פברואר 2025 · לצורך המחשה בלבד</div>
+          </div>
+        </div>
+        <div class="table-scroll anim-fade-up-1">
+          <table class="data-table" id="tGemel">
+            <thead><tr>
+              <th class="text-right" data-col="0" data-type="text">חברה <span class="sort-icon">↓</span></th>
+              <th class="text-center" data-col="1" data-type="num">תשואה 12 חודשים <span class="sort-icon">↓</span></th>
+              <th class="text-center" data-col="2" data-type="num">תשואה 3 שנים <span class="sort-icon">↓</span></th>
+              <th class="text-center" data-col="3" data-type="num">דמי ניהול <span class="sort-icon">↓</span></th>
+              <th class="text-center" data-col="4" data-type="num">נכסים מנוהלים (מיל׳) <span class="sort-icon">↓</span></th>
+            </tr></thead>
+            <tbody></tbody>
+          </table>
+        </div>
+        <div class="disclaimer mt-4">⚠️ הנתונים המוצגים הם לצורך המחשה בלבד. אינם מהווים ייעוץ השקעות.</div>
+        <div class="mt-6 text-center">
+          <a href="https://wa.me/972502278922?text=%D7%90%D7%A9%D7%9E%D7%97%20%D7%99%D7%99%D7%A2%D7%95%D7%A5%20%D7%A2%D7%9C%20%D7%92%D7%9E%D7%9C%20%D7%9C%D7%94%D7%A9%D7%A7%D7%A2%D7%94" target="_blank" class="btn-gold">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="#0A0A0A"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+            ייעוץ גמל להשקעה
+          </a>
+        </div>
+      </div>
+
+      <!-- פוליסות חיסכון -->
+      <div id="viewPolisa" class="view">
+        <div class="detail-header anim-fade-up">
+          <div class="tile-icon" style="margin:0; font-size:1.3rem;">📋</div>
+          <div>
+            <div class="detail-title gold-text">פוליסות חיסכון — מסלול מניות</div>
+            <div class="detail-sub">נתוני גמל נט · פברואר 2025 · לצורך המחשה בלבד</div>
+          </div>
+        </div>
+        <div class="table-scroll anim-fade-up-1">
+          <table class="data-table" id="tPolisa">
+            <thead><tr>
+              <th class="text-right" data-col="0" data-type="text">חברת ביטוח <span class="sort-icon">↓</span></th>
+              <th class="text-center" data-col="1" data-type="num">תשואה 12 חודשים <span class="sort-icon">↓</span></th>
+              <th class="text-center" data-col="2" data-type="num">תשואה 3 שנים <span class="sort-icon">↓</span></th>
+              <th class="text-center" data-col="3" data-type="num">דמי ניהול מנכסים <span class="sort-icon">↓</span></th>
+              <th class="text-center" data-col="4" data-type="text">נזילות <span class="sort-icon">↓</span></th>
+            </tr></thead>
+            <tbody></tbody>
+          </table>
+        </div>
+        <div class="disclaimer mt-4">⚠️ הנתונים המוצגים הם לצורך המחשה בלבד. אינם מהווים ייעוץ השקעות.</div>
+        <div class="mt-6 text-center">
+          <a href="https://wa.me/972502278922?text=%D7%90%D7%A9%D7%9E%D7%97%20%D7%99%D7%99%D7%A2%D7%95%D7%A5%20%D7%A2%D7%9C%20%D7%A4%D7%95%D7%9C%D7%99%D7%A1%D7%AA%20%D7%97%D7%99%D7%A1%D7%9B%D7%95%D7%9F" target="_blank" class="btn-gold">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="#0A0A0A"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+            ייעוץ פוליסת חיסכון
+          </a>
+        </div>
+      </div>
+
+      <!-- קרנות פנסיה -->
+      <div id="viewPension" class="view">
+        <div class="detail-header anim-fade-up">
+          <div class="tile-icon" style="margin:0; font-size:1.3rem;">🌅</div>
+          <div>
+            <div class="detail-title gold-text">קרנות פנסיה — מסלול מניות</div>
+            <div class="detail-sub">נתוני גמל נט · פברואר 2025 · לצורך המחשה בלבד</div>
+          </div>
+        </div>
+        <div class="table-scroll anim-fade-up-1">
+          <table class="data-table" id="tPension">
+            <thead><tr>
+              <th class="text-right" data-col="0" data-type="text">קרן <span class="sort-icon">↓</span></th>
+              <th class="text-center" data-col="1" data-type="num">תשואה 12 חודשים <span class="sort-icon">↓</span></th>
+              <th class="text-center" data-col="2" data-type="num">תשואה 3 שנים <span class="sort-icon">↓</span></th>
+              <th class="text-center" data-col="3" data-type="num">דמי ניהול מהפקדה <span class="sort-icon">↓</span></th>
+              <th class="text-center" data-col="4" data-type="num">דמי ניהול מצבירה <span class="sort-icon">↓</span></th>
+            </tr></thead>
+            <tbody></tbody>
+          </table>
+        </div>
+        <div class="disclaimer mt-4">⚠️ הנתונים המוצגים הם לצורך המחשה בלבד. אינם מהווים ייעוץ השקעות.</div>
+        <div class="mt-6 text-center">
+          <a href="https://wa.me/972502278922?text=%D7%90%D7%A9%D7%9E%D7%97%20%D7%99%D7%99%D7%A2%D7%95%D7%A5%20%D7%A2%D7%9C%20%D7%A7%D7%A8%D7%9F%20%D7%A4%D7%A0%D7%A1%D7%99%D7%94" target="_blank" class="btn-gold">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="#0A0A0A"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+            ייעוץ קרן פנסיה
+          </a>
+        </div>
+      </div>
+
+      <!-- חיסכון לכל ילד -->
+      <div id="viewYeladim" class="view">
+        <div class="detail-header anim-fade-up">
+          <div class="tile-icon" style="margin:0; font-size:1.3rem;">🧒</div>
+          <div>
+            <div class="detail-title gold-text">חיסכון לכל ילד</div>
+            <div class="detail-sub">נתוני גמל נט · פברואר 2025 · לצורך המחשה בלבד</div>
+          </div>
+        </div>
+        <div class="table-scroll anim-fade-up-1">
+          <table class="data-table" id="tYeladim">
+            <thead><tr>
+              <th class="text-right" data-col="0" data-type="text">גוף מנהל <span class="sort-icon">↓</span></th>
+              <th class="text-center" data-col="1" data-type="num">תשואה 12 חודשים <span class="sort-icon">↓</span></th>
+              <th class="text-center" data-col="2" data-type="num">תשואה 3 שנים <span class="sort-icon">↓</span></th>
+              <th class="text-center" data-col="3" data-type="num">דמי ניהול <span class="sort-icon">↓</span></th>
+              <th class="text-center" data-col="4" data-type="text">מסלול <span class="sort-icon">↓</span></th>
+            </tr></thead>
+            <tbody></tbody>
+          </table>
+        </div>
+        <div class="disclaimer mt-4">⚠️ הנתונים המוצגים הם לצורך המחשה בלבד. אינם מהווים ייעוץ השקעות.</div>
+        <div class="mt-6 text-center">
+          <a href="https://wa.me/972502278922?text=%D7%90%D7%A9%D7%9E%D7%97%20%D7%99%D7%99%D7%A2%D7%95%D7%A5%20%D7%A2%D7%9C%20%D7%97%D7%99%D7%A1%D7%9B%D7%95%D7%9F%20%D7%9C%D7%9B%D7%9C%20%D7%99%D7%9C%D7%93" target="_blank" class="btn-gold">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="#0A0A0A"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+            ייעוץ חיסכון לכל ילד
+          </a>
+        </div>
+      </div>
+
+    </div><!-- /container -->
+  </main>
+
+  <!-- ═══════════════════════════════════
+       FOOTER
+       ═══════════════════════════════════ -->
+  <footer>
+    <p>המערכת פותחה על ידי <span class="gold">אור זמר</span> - מתכנן פיננסי</p>
+    <p style="margin-top:4px; font-size:0.68rem;">
+      רישיון סוכן ביטוח <span dir="ltr" style="display:inline-block">L-00137567</span> ·
+      כל הנתונים לצורך המחשה בלבד
+    </p>
+  </footer>
+
+  <!-- ═══════════════════════════════════
+       JAVASCRIPT
+       ═══════════════════════════════════ -->
+  <script>
+  // ─── DATA ────────────────────────────────────────────────────
+  const DATA = {
+    hashtalut: {
+      cols: ['name','y1','y3','fee','equity'],
+      top: 'y1',
+      rows: [
+        { name:'מור',           y1:19.7, y3:45.3, fee:0.40, equity:96 },
+        { name:'אלטשולר שחם',  y1:18.4, y3:42.1, fee:0.50, equity:92 },
+        { name:'מיטב',          y1:17.2, y3:38.6, fee:0.45, equity:88 },
+        { name:'הראל',          y1:15.9, y3:35.2, fee:0.55, equity:82 },
+        { name:'פניקס',         y1:16.8, y3:36.9, fee:0.52, equity:85 },
+      ],
+      render: r => [
+        r.name,
+        fmt(r.y1,'%'), fmt(r.y3,'%'), fmt(r.fee,'%'), fmt(r.equity,'%')
+      ],
+      colors: r => [null, yieldColor(r.y1), yieldColor(r.y3/2.5), feeColor(r.fee), null],
+    },
+    gemel: {
+      cols: ['name','y1','y3','fee','aum'],
+      top: 'y1',
+      rows: [
+        { name:'מור',           y1:19.3, y3:44.1, fee:0.50, aum:2800  },
+        { name:'אלטשולר שחם',  y1:18.1, y3:41.4, fee:0.60, aum:12400 },
+        { name:'מיטב',          y1:17.0, y3:37.9, fee:0.55, aum:9100  },
+        { name:'IBI',           y1:16.4, y3:36.2, fee:0.45, aum:4300  },
+        { name:'הראל',          y1:15.6, y3:34.8, fee:0.65, aum:7800  },
+      ],
+      render: r => [r.name, fmt(r.y1,'%'), fmt(r.y3,'%'), fmt(r.fee,'%'), r.aum.toLocaleString('he')],
+      colors: r => [null, yieldColor(r.y1), yieldColor(r.y3/2.5), feeColor(r.fee), null],
+    },
+    polisa: {
+      cols: ['name','y1','y3','fee','liquidity'],
+      top: 'y1',
+      rows: [
+        { name:'מנורה מבטחים',   y1:18.8, y3:43.2, fee:0.80, liquidity:'מלאה' },
+        { name:'הראל ביטוח',     y1:17.6, y3:40.1, fee:0.90, liquidity:'מלאה' },
+        { name:'פניקס',          y1:17.1, y3:38.5, fee:0.85, liquidity:'מלאה' },
+        { name:'כלל ביטוח',      y1:16.5, y3:36.8, fee:0.95, liquidity:'מלאה' },
+        { name:'מגדל ביטוח',     y1:16.0, y3:35.4, fee:0.88, liquidity:'מלאה' },
+      ],
+      render: r => [r.name, fmt(r.y1,'%'), fmt(r.y3,'%'), fmt(r.fee,'%'), r.liquidity],
+      colors: r => [null, yieldColor(r.y1), yieldColor(r.y3/2.5), feeColor(r.fee), null],
+    },
+    pension: {
+      cols: ['name','y1','y3','feeDeposit','feeAcc'],
+      top: 'y1',
+      rows: [
+        { name:'מור פנסיה',           y1:20.1, y3:46.2, feeDeposit:1.49, feeAcc:0.10 },
+        { name:'אלטשולר שחם פנסיה',  y1:18.9, y3:43.5, feeDeposit:1.49, feeAcc:0.10 },
+        { name:'מיטב פנסיה',          y1:17.8, y3:39.9, feeDeposit:1.49, feeAcc:0.10 },
+        { name:'הראל פנסיה',          y1:16.7, y3:37.1, feeDeposit:1.49, feeAcc:0.15 },
+        { name:'פניקס פנסיה',         y1:16.2, y3:36.0, feeDeposit:1.49, feeAcc:0.20 },
+      ],
+      render: r => [r.name, fmt(r.y1,'%'), fmt(r.y3,'%'), fmt(r.feeDeposit,'%'), fmt(r.feeAcc,'%')],
+      colors: r => [null, yieldColor(r.y1), yieldColor(r.y3/2.5), feeColor(r.feeDeposit/3), feeColor(r.feeAcc)],
+    },
+    yeladim: {
+      cols: ['name','y1','y3','fee','track'],
+      top: 'y1',
+      rows: [
+        { name:'מור',           y1:19.5, y3:44.8, fee:0.40, track:'מניות' },
+        { name:'אלטשולר שחם',  y1:18.2, y3:41.9, fee:0.50, track:'מניות' },
+        { name:'מיטב',          y1:17.0, y3:38.1, fee:0.45, track:'מניות' },
+        { name:'הראל',          y1:15.8, y3:35.0, fee:0.55, track:'מניות' },
+        { name:'פניקס',         y1:14.9, y3:32.6, fee:0.52, track:'מניות' },
+      ],
+      render: r => [r.name, fmt(r.y1,'%'), fmt(r.y3,'%'), fmt(r.fee,'%'), r.track],
+      colors: r => [null, yieldColor(r.y1), yieldColor(r.y3/2.5), feeColor(r.fee), null],
+    },
+  };
+
+  // ─── HELPERS ──────────────────────────────────────────────────
+  function fmt(v, suffix) {
+    return v.toFixed(suffix === '%' ? 1 : 2) + suffix;
+  }
+  function yieldColor(v) {
+    if (v >= 17) return '#4ade80';
+    if (v >= 15) return '#a3e635';
+    return '#d1d5db';
+  }
+  function feeColor(v) {
+    if (v <= 0.45) return '#4ade80';
+    if (v <= 0.60) return '#d1d5db';
+    return '#fca5a5';
+  }
+
+  // ─── SORT STATE ───────────────────────────────────────────────
+  const sortState = {};
+
+  function buildTable(tableId, dataKey) {
+    const dataset = DATA[dataKey];
+    if (!dataset) return;
+    const table = document.getElementById(tableId);
+    if (!table) return;
+    const tbody = table.querySelector('tbody');
+    const state = sortState[dataKey] || { col: 1, dir: 'desc' };
+
+    const topVal = Math.max(...dataset.rows.map(r => r[dataset.top]));
+
+    // Sort
+    const sorted = [...dataset.rows].sort((a, b) => {
+      const col = dataset.cols[state.col];
+      const va = a[col], vb = b[col];
+      if (typeof va === 'string') return state.dir==='asc' ? va.localeCompare(vb,'he') : vb.localeCompare(va,'he');
+      return state.dir==='asc' ? va - vb : vb - va;
+    });
+
+    tbody.innerHTML = '';
+    sorted.forEach(r => {
+      const isTop = r[dataset.top] === topVal;
+      const cells = dataset.render(r);
+      const colors = dataset.colors(r);
+      const tr = document.createElement('tr');
+      if (isTop) tr.classList.add('top-row');
+      cells.forEach((cell, i) => {
+        const td = document.createElement('td');
+        td.className = i === 0 ? 'text-right' : 'text-center tabular';
+        td.innerHTML = i === 0 && isTop ? `★ ${cell}` : cell;
+        if (colors[i]) td.style.color = colors[i];
+        if (i > 0) td.style.fontWeight = '600';
+        tr.appendChild(td);
+      });
+      tbody.appendChild(tr);
+    });
+
+    // Update header sort icons
+    table.querySelectorAll('th').forEach((th, i) => {
+      th.classList.remove('asc','desc');
+      if (i === state.col) th.classList.add(state.dir);
+    });
+  }
+
+  function attachSortListeners(tableId, dataKey) {
+    const table = document.getElementById(tableId);
+    if (!table) return;
+    table.querySelectorAll('th').forEach((th, i) => {
+      th.addEventListener('click', () => {
+        const prev = sortState[dataKey] || { col: 1, dir: 'desc' };
+        sortState[dataKey] = {
+          col: i,
+          dir: prev.col === i ? (prev.dir === 'asc' ? 'desc' : 'asc') : 'desc'
+        };
+        buildTable(tableId, dataKey);
+      });
+    });
+  }
+
+  // ─── VIEW SWITCHING ────────────────────────────────────────────
+  const viewMap = {
+    hashtalut: { viewId: 'viewHashtalut', tableId: 'tHashtalut', dataKey: 'hashtalut' },
+    gemel:     { viewId: 'viewGemel',     tableId: 'tGemel',     dataKey: 'gemel'     },
+    polisa:    { viewId: 'viewPolisa',    tableId: 'tPolisa',    dataKey: 'polisa'    },
+    pension:   { viewId: 'viewPension',   tableId: 'tPension',   dataKey: 'pension'   },
+    yeladim:   { viewId: 'viewYeladim',   tableId: 'tYeladim',   dataKey: 'yeladim'   },
+  };
+
+  function showView(key) {
+    document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+    const cfg = viewMap[key];
+    document.getElementById(cfg.viewId).classList.add('active');
+    document.getElementById('backBtn').style.display = 'block';
+    buildTable(cfg.tableId, cfg.dataKey);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function showLanding() {
+    document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+    document.getElementById('viewLanding').classList.add('active');
+    document.getElementById('backBtn').style.display = 'none';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  // ─── INIT ─────────────────────────────────────────────────────
+  Object.values(viewMap).forEach(cfg => attachSortListeners(cfg.tableId, cfg.dataKey));
+  </script>
+
+</body>
+</html>
